@@ -1,5 +1,29 @@
 (Login/authentication isn’t required; any web user can do everything)
 
+Completed:
+  #installed aws on both ends,
+  #can upload image to aws from CLI
+
+
+To start:
+
+  #need info on:
+    -libraries for image editing
+    -common practice for where photo is edited
+       -image tweaked on front-end? or are changes only logged
+    -does the backend need a db to access image from user search?  exif data and link to s3 bucket
+    -further study: save different versions of same image
+
+  #flask server
+    -able to receive jpg files from front end (external lib?)
+    -
+
+  #simple front-end
+    -able to upload file from computer
+
+
+
+
 Users can view photos stored in the system
 
 Users can add a JPG photo using an upload form and picking a file on their computer (you’ll need to learn how to allow image uploads!)
