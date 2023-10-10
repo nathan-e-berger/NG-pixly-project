@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/jquery"></script>
+</head>
+
+<body>
+  <!-- fileupload, 3 keyword fields, submit button -->
+  <form id="image-form" method="POST">
+    <input id="file" name="file" type="file" />
+    <!-- <input id="keyword1" name="keyword1" placeholder="keyword" />
+    <input id="keyword2" name="keyword2" placeholder="keyword" />
+    <input id="keyword3" name="keyword3" placeholder="keyword" /> -->
+    <button type="submit" id="click">Submit</button>
+  </form>
+
+</body>
+<script>
+  const BASE_URL = "http://localhost:3000";
+  //TODO: if resp ok give success message
+  // separate send for image?
+  let data;
+
+  document.getElementById('file').onchange = function (e) {
+    let files = (e.target).files;
+
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      data = e.target.result;
+    };
+    if (files.length > 0) {
+      reader.readAsDataURL(files?.[ 0 ]);
+    }
+  };
+
+  document.getElementById('click').onclick = function () {
+    console.log(data);
+
+    // const file = document.getElementById("file");
+    // const reader = new FileReader();
+
+    // reader.onload = function (event) {
+    //   const base64 = event.target.result;
+    // };
+
+    // reader.readAsDataURL(file);
+  }
+  async function processForm(evt) {
+    evt.preventDefault();
+    const $file = $("#file").val();
+
+
+    // const $keyword1 = $("#keyword1").val();
+    // const $keyword2 = $("#keyword2").val();
+    // const $keyword3 = $("#keyword3").val();
+
+    const response = await fetch(`${BASE_URL}/upload`,
+      {
+        method: "POST",
+        // body: JSON.stringify({ $file, $keyword1, $keyword2, $keyword3 }),
+        body: $file,
+        headers: { "Content-Type": "image/jpg" },
+      });
+    const responseData = await response.json();
+
+
+  }
+  $("#image-form").on("submit", processForm);
+</script>
+
+</html>
