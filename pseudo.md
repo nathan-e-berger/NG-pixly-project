@@ -1,5 +1,13 @@
 (Login/authentication isn’t required; any web user can do everything)
 
+Time management/estimation
+
+minimum viable product:
+
+stretch goals:
+  -tests
+
+
 Completed:
   #installed aws on both ends,
   #can upload image to aws from CLI
@@ -9,12 +17,12 @@ To start:
 
   #need info on:
     -libraries for image editing
+       -pill, pillow
     -common practice for where photo is edited
        -image tweaked on front-end? or are changes only logged
-    -does the backend need a db to access image from user search?  exif data and link to s3 bucket
-    -further study: save different versions of same image
-
   #flask server
+    -does the backend need a db to access image from user search?  exif data and link to s3 bucket
+
     -able to receive jpg files from front end (external lib?)
     -
 
@@ -23,6 +31,7 @@ To start:
 
 
 
+    -further study: save different versions of same image
 
 Users can view photos stored in the system
 
