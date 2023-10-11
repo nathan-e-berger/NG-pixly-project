@@ -1,4 +1,8 @@
 import os
+from utils import upload_file 
+from PIL import Image
+from PIL.ExifTags import TAGS
+
 
 from flask import Flask, redirect, session, render_template, request, jsonify
 # from flask_debugtoolbar import DebugToolbarExtension
@@ -20,12 +24,19 @@ app = Flask(__name__)
 #
 @app.post('/upload')
 def view_upload():
-    """Show and handle form"""
-    file = request.files
+    """Show and handle form
+    # process exif data and send to db 
+    # delete temp file on server after
+    """
+    file = request.files['file']
     keyword = request.form
-    file['file'].save(f"/Users/nathan/rithm/projects/NG-pixly-project/{keyword['keyword1']}", 100)
-    breakpoint()
-
+    file_name = f"./tmp/{keyword['keyword1']}.jpg"
+    file.save(file_name, 100)
+    upload_file(file_name, 'r33-pixly')
+    for 
+        print(TAGS[i])
+    # im = Image.open(file_name)
+    # print(im.getexif())
     return jsonify("nice pic")
 
 @app.get('/')
