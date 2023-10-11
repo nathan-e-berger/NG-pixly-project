@@ -1,7 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 
-# pip install Flask-SQLAlchemy
 db = SQLAlchemy()
+
+def connect_db(app):
+    """Connect this database to provided Flask app.
+    """
+
+    app.app_context().push()
+    db.app = app
+    db.init_app(app)
+    
 
 class Image(db.Model):
     """Creates Image instance"""
@@ -9,9 +17,9 @@ class Image(db.Model):
     __tablename__ = "images"
 
     id = db.Column(
-        db.Serial,
+        db.Integer,
         primary_key=True,
-        unique=True
+        autoincrement=True
     )
 
     title = db.Column(
@@ -34,12 +42,12 @@ class Image(db.Model):
 
     make = db.Column(
         db.String,
-        nullble=True
+        nullable=True
     )
 
     model = db.Column(
         db.String,
-        nullabe=True
+        nullable=True
     )
 
     date_time = db.Column(
@@ -59,7 +67,6 @@ class Image(db.Model):
 
     # exposure =
     # white_balance =
-
     # focal_length =
 
 
