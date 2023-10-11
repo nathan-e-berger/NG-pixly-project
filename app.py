@@ -17,13 +17,16 @@ app = Flask(__name__)
 
 
 #TODO: update requirements with flask
+#
 @app.post('/upload')
 def view_upload():
     """Show and handle form"""
     file = request.files
+    keyword = request.form
+    file['file'].save(f"/Users/nathan/rithm/projects/NG-pixly-project/{keyword['keyword1']}", 100)
     breakpoint()
 
-    return jsonify("index.html")
+    return jsonify("nice pic")
 
 @app.get('/')
 def view_home():
