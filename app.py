@@ -38,7 +38,6 @@ def view_upload():
 
     # for k, v in exif.items():
     #     print("Tag", Base(k).name, "Value", v)
-    gm = im.getdata()
 
     GPSTAGS = {i.value: i.name for i in GPS}
     print(GPSTAGS)
