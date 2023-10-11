@@ -1,7 +1,7 @@
 import os
-from utils import upload_file 
+from utils import upload_file
 from PIL import Image
-from PIL.ExifTags import TAGS
+from PIL.ExifTags import TAGS, Base, GPS
 
 
 from flask import Flask, redirect, session, render_template, request, jsonify
@@ -25,7 +25,7 @@ app = Flask(__name__)
 @app.post('/upload')
 def view_upload():
     """Show and handle form
-    # process exif data and send to db 
+    # process exif data and send to db
     # delete temp file on server after
     """
     file = request.files['file']
@@ -33,10 +33,16 @@ def view_upload():
     file_name = f"./tmp/{keyword['keyword1']}.jpg"
     file.save(file_name, 100)
     upload_file(file_name, 'r33-pixly')
-    for 
-        print(TAGS[i])
-    # im = Image.open(file_name)
-    # print(im.getexif())
+    im = Image.open(file_name)
+    exif = im.getexif()
+
+    # for k, v in exif.items():
+    #     print("Tag", Base(k).name, "Value", v)
+    gm = im.getdata()
+
+    GPSTAGS = {i.value: i.name for i in GPS}
+    print(GPSTAGS)
+
     return jsonify("nice pic")
 
 @app.get('/')
