@@ -24,33 +24,36 @@ connect_db(app)
 #
 @app.post('/upload')
 def view_upload():
-    """Show and handle form
-    get upload file
-    get inputs
-    generate name based on inputs
-    create tmp file for image upload
-    process image exif data using pillow
-    compile data + make new instance of Image -> to DB
-    upload to S3 
-    .close to delete tmp file
-    """
-    file = request.files['file']
-    id = request.form
+    file = request.files["file"]
+    id = request.form.get("id")
+    title = request.form.get("title")
+    keyword = request.form.get("keyword")
+
     file_name = f"{id}.jpg"
-    with tempfile.TemporaryFile() as f:
-        upload_file(f, 'r33-pixly', file_name)
-        f.close()
-    # file.save(file_name, 100)
-    im = Image.open(file_name)
-    exif = im.getexif()
+    bucket_name = "r33-pixly"
+    exif_data = {}
 
-    #  for k, v in exif.items():
-    #     print("Tag", Base(k).name, "Value", v)
+    s3_url = f'https://{bucket_name}.s3.amazonaws.com/{file_name}'
 
-    GPSTAGS = {i.value: i.name for i in GPS}
-    print(GPSTAGS)
+    with tempfile.NamedTemporaryFile(delete=True) as tmp_file:
+        file_content = file.read()
+        tmp_file.write(file_content)
+        upload_file(tmp_file.name, bucket_name, file_name)
 
-    return jsonify("nice pic")
+        img = Image.open(tmp_file)
+        exif = (img.getexif())
+
+        if exif: 
+            for tag, value in exif.items():
+                # exif_data[Base(tag).name] = value
+                if tag in ExifTags.TAGS:
+                    tag_name = ExifTags.TAGS[tag]
+                    exif_data[tag_name] = value
+    # GPSTAGS = {i.value: i.name for i in GPS}
+    print(exif_data)
+
+    return render_template("index.html")
+
 
 @app.get('/')
 def view_home():
