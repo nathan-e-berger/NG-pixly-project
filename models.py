@@ -11,15 +11,14 @@ def connect_db(app):
     db.init_app(app)
 
 
-class Image(db.Model):
+class ImageFile(db.Model):
     """Creates Image instance"""
 
     __tablename__ = "images"
 
     id = db.Column(
-        db.Integer,
+        db.String,
         primary_key=True,
-        autoincrement=True
     )
 
     title = db.Column(
@@ -57,23 +56,39 @@ class Image(db.Model):
 
     image_width = db.Column(
         db.Integer,
-        nullable=False
+        nullable=True,
+        default=None
     )
 
     image_length = db.Column(
         db.Integer,
-        nullable=False
+        nullable=True,
+        default=None
+    )
+
+    s3_url = db.Column(
+    db.String,
+    nullable=False
     )
 
     @classmethod
-    def addExif(cls, exif_data)
-
-
-        image = Image({make=exif_data['Make'],
-                      'model': exif_data['Model'],
-                      'date_time': exif_data['DateTime'],
-                        'image_width': exif_data['ImageWidth'],
-                        'image_length': exif_data['ImageLength']})
+    def create(cls, exif_data, input_data):
+        image = ImageFile(
+                    make=exif_data['Make'],
+                    model=exif_data['Model'],
+                    date_time=exif_data['DateTime'],
+                        image_width=exif_data.get('ImageWidth'),
+                        image_length= exif_data.get('ImageLength'),
+                        s3_url=input_data['s3_url'], 
+                        id=input_data['id'], 
+                        title=input_data['title'], 
+                        keyword1=input_data['keyword1'], 
+                        keyword2=input_data['keyword2'], 
+                        keyword3=input_data['keyword3']
+                        )
+        print(image)
+        
+        return image
 
 
 

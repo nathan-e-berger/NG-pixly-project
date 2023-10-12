@@ -10,12 +10,12 @@ from utils import upload_file
 # from werkzeug.exceptions import Unauthorized
 # # AUTH_KEY = "username"
 import os
-
+import shortuuid
 import boto3
 from botocore.exceptions import ClientError
 
 from flask import Flask, render_template, redirect, session, request
-from models import connect_db, db, Image
+from models import connect_db, db, ImageFile
 
 from PIL import Image, ExifTags
 from PIL.ExifTags import TAGS, GPS, IFD, Base
@@ -37,13 +37,17 @@ connect_db(app)
 @app.post('/upload')
 def view_upload():
     file = request.files["file"]
-    id = request.form.get("id")
+
+    id = shortuuid.uuid()
     title = request.form.get("title")
-    keyword = request.form.get("keyword")
+    keyword1 = request.form.get("keyword1")
+    keyword2 = request.form.get("keyword2")
+    keyword3 = request.form.get("keyword3")
 
     file_name = f"{id}.jpg"
     bucket_name = "r33-pixly"
     exif_data = {}
+
 
     s3_url = f'https://{bucket_name}.s3.amazonaws.com/{file_name}'
 
@@ -63,6 +67,19 @@ def view_upload():
                     exif_data[tag_name] = value
     # GPSTAGS = {i.value: i.name for i in GPS}
     print(exif_data)
+
+    input_data = {      's3_url':s3_url, 
+                        'id':id, 
+                        'title':title, 
+                        'keyword1':keyword1, 
+                        'keyword2':keyword2, 
+                        'keyword3':keyword3
+                        }
+
+    image = ImageFile.create(exif_data, input_data)
+
+    db.session.add(image)
+    db.session.commit()
 
     return render_template("index.html")
 

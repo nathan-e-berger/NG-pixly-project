@@ -12,9 +12,10 @@
   <!-- fileupload, 3 keyword fields, submit button -->
   <form id="image-form" method="POST" action="/upload" enctype="multipart/form-data">
     <input id="file" name="file" type="file" />
+    <input id="title" name="title" placeholder="title" />
     <input id="keyword1" name="keyword1" placeholder="keyword" />
-    <!-- <input id="keyword2" name="keyword2" placeholder="keyword" /> -->
-    <!-- <input id="keyword3" name="keyword3" placeholder="keyword" />  -->
+    <input id="keyword2" name="keyword2" placeholder="keyword" />
+    <input id="keyword3" name="keyword3" placeholder="keyword" />
     <button type="submit" id="click">Submit</button>
   </form>
 
@@ -56,8 +57,11 @@
     const fileInput = document.getElementById("file");
     const keyword1 = document.getElementById("keyword1");
     console.log("keyword1", keyword1);
-    formData.append("file", fileInput.files[0]);
+    formData.append("file", fileInput.files[ 0 ]);
     formData.append("keyword1", keyword1.value);
+    formData.append("title", title.value);
+    formData.append("keyword2", keyword2.value);
+    formData.append("keyword3", keyword3.value);
     // debugger;
 
     //TODO: Formdata class, decipher what headers you need
