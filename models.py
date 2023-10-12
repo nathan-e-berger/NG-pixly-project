@@ -16,6 +16,16 @@ class ImageFile(db.Model):
 
     __tablename__ = "images"
 
+    def to_dict(self):
+        """serialize to dict"""
+
+        return {"id": self.id,
+                "title": self.title,
+                "keyword1": self.keyword1,
+                "keyword2": self.keyword2,
+                "keyword3": self.keyword3,
+                "s3_url": self.s3_url}
+
     id = db.Column(
         db.String,
         primary_key=True,
@@ -79,16 +89,20 @@ class ImageFile(db.Model):
                     date_time=exif_data['DateTime'],
                         image_width=exif_data.get('ImageWidth'),
                         image_length= exif_data.get('ImageLength'),
-                        s3_url=input_data['s3_url'], 
-                        id=input_data['id'], 
-                        title=input_data['title'], 
-                        keyword1=input_data['keyword1'], 
-                        keyword2=input_data['keyword2'], 
+                        s3_url=input_data['s3_url'],
+                        id=input_data['id'],
+                        title=input_data['title'],
+                        keyword1=input_data['keyword1'],
+                        keyword2=input_data['keyword2'],
                         keyword3=input_data['keyword3']
                         )
         print(image)
-        
+
         return image
+
+
+
+
 
 
 

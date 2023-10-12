@@ -14,7 +14,7 @@ import shortuuid
 import boto3
 from botocore.exceptions import ClientError
 
-from flask import Flask, render_template, redirect, session, request
+from flask import Flask, render_template, redirect, session, request, jsonify
 from models import connect_db, db, ImageFile
 
 from PIL import Image, ExifTags
@@ -68,11 +68,11 @@ def view_upload():
     # GPSTAGS = {i.value: i.name for i in GPS}
     print(exif_data)
 
-    input_data = {      's3_url':s3_url, 
-                        'id':id, 
-                        'title':title, 
-                        'keyword1':keyword1, 
-                        'keyword2':keyword2, 
+    input_data = {      's3_url':s3_url,
+                        'id':id,
+                        'title':title,
+                        'keyword1':keyword1,
+                        'keyword2':keyword2,
                         'keyword3':keyword3
                         }
 
@@ -86,9 +86,19 @@ def view_upload():
 
 @app.get('/')
 def view_home():
-    """Show and handle form"""
+    """Return a list of ImageFile instances matching the search query"""
 
+    if not request.args:
+        images = [ image.to_dict() for image in ImageFile.query.all()]
+    else:
+        print("in the else")
+        title = request.args.get('title')
+        images = ImageFile.query.filter(ImageFile.title.like(f"%{title}%")).all()
+        images = [image.to_dict() for image in images]
 
-    return render_template("index.html")
+    print("request.args",request.args)
+
+    return jsonify(images=images)
+    # return render_template("index.html")
 
 # { date_time=exif_data['dateTime']}
