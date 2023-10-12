@@ -9,7 +9,7 @@ def connect_db(app):
     app.app_context().push()
     db.app = app
     db.init_app(app)
-    
+
 
 class Image(db.Model):
     """Creates Image instance"""
@@ -64,6 +64,20 @@ class Image(db.Model):
         db.Integer,
         nullable=False
     )
+
+    @classmethod
+    def addExif(cls, exif_data)
+
+
+        image = Image({make=exif_data['Make'],
+                      'model': exif_data['Model'],
+                      'date_time': exif_data['DateTime'],
+                        'image_width': exif_data['ImageWidth'],
+                        'image_length': exif_data['ImageLength']})
+
+
+
+    # { date_time=exif_data['dateTime']}
 
     # exposure =
     # white_balance =

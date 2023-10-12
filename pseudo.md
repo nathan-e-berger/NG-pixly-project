@@ -4,6 +4,16 @@ Time management/estimation
 
 minimum viable product:
 
+
+dB
+  #post new image
+    -class method that adds data to db
+
+
+
+
+
+
 stretch goals:
   -tests
 

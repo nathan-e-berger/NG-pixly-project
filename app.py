@@ -1,14 +1,26 @@
-import os
 from utils import upload_file
-from PIL import Image
-from PIL.ExifTags import TAGS, Base, GPS
-from models import db, connect_db, Image
+# import os
+# from PIL import Image
+# from PIL.ExifTags import TAGS, Base, GPS
+# from models import db, connect_db, Image
 
 
-from flask import Flask, redirect, session, render_template, request, jsonify
-# from flask_debugtoolbar import DebugToolbarExtension
-from werkzeug.exceptions import Unauthorized
-# AUTH_KEY = "username"
+# from flask import Flask, redirect, session, render_template, request, jsonify
+# # from flask_debugtoolbar import DebugToolbarExtension
+# from werkzeug.exceptions import Unauthorized
+# # AUTH_KEY = "username"
+import os
+
+import boto3
+from botocore.exceptions import ClientError
+
+from flask import Flask, render_template, redirect, session, request
+from models import connect_db, db, Image
+
+from PIL import Image, ExifTags
+from PIL.ExifTags import TAGS, GPS, IFD, Base
+
+import tempfile
 
 app = Flask(__name__)
 
@@ -43,7 +55,7 @@ def view_upload():
         img = Image.open(tmp_file)
         exif = (img.getexif())
 
-        if exif: 
+        if exif:
             for tag, value in exif.items():
                 # exif_data[Base(tag).name] = value
                 if tag in ExifTags.TAGS:
@@ -61,3 +73,5 @@ def view_home():
 
 
     return render_template("index.html")
+
+# { date_time=exif_data['dateTime']}
