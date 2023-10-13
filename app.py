@@ -13,7 +13,7 @@ import os
 import shortuuid
 import boto3
 from botocore.exceptions import ClientError
-
+from flask_cors import CORS
 from flask import Flask, render_template, redirect, session, request, jsonify
 from models import connect_db, db, ImageFile
 
@@ -30,6 +30,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 app.config['SQLALCHEMY_ECHO'] = True
 # app.config['SECRET_KEY'] = "i-have-a-secret"
 connect_db(app)
+CORS(app)
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 
 #TODO: update requirements with flask
