@@ -4,9 +4,6 @@ from botocore.exceptions import ClientError
 import os
 import tempfile
 
-
-
-
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
 

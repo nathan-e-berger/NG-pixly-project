@@ -24,23 +24,22 @@ import tempfile
 
 app = Flask(__name__)
 
-# toolbar = DebugToolbarExtension(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL", "postgresql:///pixly")
 app.config['SQLALCHEMY_ECHO'] = True
-# app.config['SECRET_KEY'] = "i-have-a-secret"
 connect_db(app)
 CORS(app)
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
 
-#TODO: update requirements with flask
-#
 @app.post('/upload')
 def view_upload():
-    file = request.files["file"]
-    print("file", file)
-    print("form", request.form)
+    """ 
+    Creates new image and uploads to s3 : 
+            body : { title, keyword1, keyword2, keyword3, [file] }
+    returns : 
+        { id, title, keyword1, keyword2, keyword3, s3_url }
+    """
 
+    file = request.files["file"]
     id = shortuuid.uuid()
     title = request.form.get("title")
     keyword1 = request.form.get("keyword1")
@@ -50,7 +49,6 @@ def view_upload():
     file_name = f"{id}.jpg"
     bucket_name = "r33-pixly"
     exif_data = {}
-
 
     s3_url = f'https://{bucket_name}.s3.amazonaws.com/{file_name}'
 
@@ -64,14 +62,13 @@ def view_upload():
 
         if exif:
             for tag, value in exif.items():
-                # exif_data[Base(tag).name] = value
                 if tag in ExifTags.TAGS:
                     tag_name = ExifTags.TAGS[tag]
                     exif_data[tag_name] = value
-    # GPSTAGS = {i.value: i.name for i in GPS}
-    print(exif_data)
+    # TODO: GPSTAGS = {i.value: i.name for i in GPS}
 
-    input_data = {      's3_url':s3_url,
+    input_data = {      
+                        's3_url':s3_url,
                         'id':id,
                         'title':title,
                         'keyword1':keyword1,
@@ -91,19 +88,13 @@ def view_upload():
 
 @app.get('/')
 def view_home():
-    """Return a list of ImageFile instances matching the search query"""
+    """Return a list of all images or matching the search query"""
 
     if not request.args:
         images = [ image.to_dict() for image in ImageFile.query.all()]
     else:
-        print("in the else")
         title = request.args.get('title')
         images = ImageFile.query.filter(ImageFile.title.like(f"%{title}%")).all()
         images = [image.to_dict() for image in images]
 
-    # print("request.args",request.args)
-
     return jsonify(images=images)
-    # return render_template("index.html")
-
-# { date_time=exif_data['dateTime']}

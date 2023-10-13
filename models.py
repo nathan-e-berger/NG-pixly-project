@@ -43,11 +43,11 @@ class ImageFile(db.Model):
         db.String,
         nullable=False
     )
+
     keyword3 = db.Column(
         db.String,
         nullable=False
     )
-# TODO: can add defaults, then switch to nullable=false
 
     make = db.Column(
         db.String,
@@ -99,8 +99,6 @@ class ImageFile(db.Model):
                             )
         except:
             print("There was an error")
-
-        # print(image)
 
         return image
 
