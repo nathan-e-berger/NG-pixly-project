@@ -83,20 +83,24 @@ class ImageFile(db.Model):
 
     @classmethod
     def create(cls, exif_data, input_data):
-        image = ImageFile(
-                    make=exif_data['Make'],
-                    model=exif_data['Model'],
-                    date_time=exif_data['DateTime'],
-                        image_width=exif_data.get('ImageWidth'),
-                        image_length= exif_data.get('ImageLength'),
-                        s3_url=input_data['s3_url'],
-                        id=input_data['id'],
-                        title=input_data['title'],
-                        keyword1=input_data['keyword1'],
-                        keyword2=input_data['keyword2'],
-                        keyword3=input_data['keyword3']
-                        )
-        print(image)
+        try:
+            image = ImageFile(
+                        make=exif_data.get('Make'),
+                        model=exif_data.get('Model'),
+                        date_time=exif_data.get('DateTime'),
+                            image_width=exif_data.get('ImageWidth'),
+                            image_length= exif_data.get('ImageLength'),
+                            s3_url=input_data.get('s3_url'),
+                            id=input_data.get('id'),
+                            title=input_data.get('title'),
+                            keyword1=input_data.get('keyword1'),
+                            keyword2=input_data.get('keyword2'),
+                            keyword3=input_data.get('keyword3')
+                            )
+        except:
+            print("There was an error")
+
+        # print(image)
 
         return image
 

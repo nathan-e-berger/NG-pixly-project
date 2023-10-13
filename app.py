@@ -38,6 +38,8 @@ CORS(app)
 @app.post('/upload')
 def view_upload():
     file = request.files["file"]
+    print("file", file)
+    print("form", request.form)
 
     id = shortuuid.uuid()
     title = request.form.get("title")
@@ -82,7 +84,9 @@ def view_upload():
     db.session.add(image)
     db.session.commit()
 
-    return render_template("index.html")
+    image = image.to_dict()
+
+    return jsonify(image=image)
 
 
 @app.get('/')
@@ -97,7 +101,7 @@ def view_home():
         images = ImageFile.query.filter(ImageFile.title.like(f"%{title}%")).all()
         images = [image.to_dict() for image in images]
 
-    print("request.args",request.args)
+    # print("request.args",request.args)
 
     return jsonify(images=images)
     # return render_template("index.html")
