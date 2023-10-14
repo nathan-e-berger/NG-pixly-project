@@ -77,17 +77,17 @@ class ImageFile(db.Model):
     )
 
     s3_url = db.Column(
-    db.String,
-    nullable=False
+        db.String,
+        nullable=False
     )
 
     @classmethod
     def create(cls, exif_data, input_data):
         try:
             image = ImageFile(
-                        make=exif_data.get('Make'),
-                        model=exif_data.get('Model'),
-                        date_time=exif_data.get('DateTime'),
+                            make=exif_data.get('Make'),
+                            model=exif_data.get('Model'),
+                            date_time=exif_data.get('DateTime'),
                             image_width=exif_data.get('ImageWidth'),
                             image_length= exif_data.get('ImageLength'),
                             s3_url=input_data.get('s3_url'),

@@ -1,14 +1,5 @@
 from utils import upload_file
-# import os
-# from PIL import Image
-# from PIL.ExifTags import TAGS, Base, GPS
-# from models import db, connect_db, Image
 
-
-# from flask import Flask, redirect, session, render_template, request, jsonify
-# # from flask_debugtoolbar import DebugToolbarExtension
-# from werkzeug.exceptions import Unauthorized
-# # AUTH_KEY = "username"
 import os
 import shortuuid
 import boto3
